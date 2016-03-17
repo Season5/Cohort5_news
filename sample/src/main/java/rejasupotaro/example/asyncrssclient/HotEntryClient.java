@@ -1,8 +1,8 @@
 package rejasupotaro.example.asyncrssclient;
 
-import org.apache.http.Header;
-
 import android.util.Log;
+
+import org.apache.http.Header;
 
 import java.util.List;
 
@@ -14,12 +14,15 @@ import rejasupotaro.example.asyncrssclient.models.Entry;
 
 public class HotEntryClient {
 
+    public HotEntryClient(String url){
+        this.HOTENTRY_RSS_URL = url;
+    }
+
     private static final String TAG = HotEntryClient.class.getSimpleName();
 
     private static final AsyncRssClient sClient = new AsyncRssClient();
 
-    private static final String HOTENTRY_RSS_URL = "http://b.hatena.ne.jp/hotentry?mode=rss";
-
+    private static String HOTENTRY_RSS_URL;
     public static interface HotEntryResponseHandler {
 
         public void onResponse(List<Entry> rssItemList);
@@ -42,5 +45,6 @@ public class HotEntryClient {
                 handler.onErrorResponse();
             }
         });
+
     }
 }

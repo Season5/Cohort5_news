@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -12,19 +11,16 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import org.apache.http.Header;
-
 import java.util.List;
 
-import rejasupotaro.asyncrssclient.AsyncRssClient;
-import rejasupotaro.asyncrssclient.AsyncRssResponseHandler;
-import rejasupotaro.asyncrssclient.RssFeed;
-import rejasupotaro.asyncrssclient.RssItem;
 import rejasupotaro.example.asyncrssclient.adapters.EntryAdapter;
 import rejasupotaro.example.asyncrssclient.models.Entry;
 
 public class MainActivity extends Activity {
 
+    Intent i = getIntent();
+
+    String url = i.getStringExtra("url");
     private ListView mHotEntryListView;
 
     @Override
@@ -41,7 +37,8 @@ public class MainActivity extends Activity {
     }
 
     private void requestHotEntry() {
-        HotEntryClient client = new HotEntryClient();
+
+        HotEntryClient client = new HotEntryClient(url);
         client.request(new HotEntryClient.HotEntryResponseHandler() {
             @Override
             public void onResponse(List<Entry> rssItemList) {
