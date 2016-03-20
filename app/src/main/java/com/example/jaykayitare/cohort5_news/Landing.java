@@ -8,8 +8,13 @@ import android.widget.Toast;
 
 import com.example.jaykayitare.cohort5_news.R;
 
+import java.util.ArrayList;
+
 import it.gmariotti.cardslib.library.cards.material.MaterialLargeImageCard;
 import it.gmariotti.cardslib.library.internal.Card;
+import it.gmariotti.cardslib.library.internal.CardGridArrayAdapter;
+import it.gmariotti.cardslib.library.internal.CardThumbnail;
+import it.gmariotti.cardslib.library.view.CardGridView;
 import it.gmariotti.cardslib.library.view.CardViewNative;
 
 public class Landing extends AppCompatActivity {
@@ -19,69 +24,95 @@ public class Landing extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_landing);
 
-        MaterialLargeImageCard business = MaterialLargeImageCard.with(getApplicationContext())
-                .setTextOverImage("Business")
-                .useDrawableId(R.drawable.funds)
-                .build();
+//        Array of cardviews
+        ArrayList<Card> cards = new ArrayList<Card>();
 
-        MaterialLargeImageCard politics = MaterialLargeImageCard.with(getApplicationContext())
-                .setTextOverImage("Politics")
-                .useDrawableId(R.drawable.politics)
-                .build();
+        //array of images used in cardviews
+        int listImages[] = new int[]{R.drawable.funds, R.drawable.politics, R.drawable.sport, R.drawable.tech};
 
-        MaterialLargeImageCard sports = MaterialLargeImageCard.with(getApplicationContext())
-                .setTextOverImage("Sports")
-                .useDrawableId(R.drawable.sport)
-                .build();
+//        array of titles of cardviews
+        String listTitles[] = new String[]{"Business", "Politics", "Sports", "Technology"};
 
-        MaterialLargeImageCard technology = MaterialLargeImageCard.with(getApplicationContext())
-                .setTextOverImage("Technology")
-                .useDrawableId(R.drawable.tech)
-                .build();
+//        array of rss feed links
+        final String listFeeds[] = new String[]{"http://www.economist.com/sections/business-finance/rss.xml","http://feeds.reuters.com/Reuters/PoliticsNews","http://newsrss.bbc.co.uk/rss/sportonline_uk_edition/front_page/rss.xml","http://feeds.wired.com/wired/index"};
+        for(int i = 0; i<4; i++){
+            //create final counter accessible from inner class
+            final int counter = i;
+            //Create a car
+            Card card = new Card(this);
+            //Add a picture
+            CardThumbnail thumb = new CardThumbnail(this);
+            thumb.setDrawableResource(listImages[i]);
+            card.addCardThumbnail(thumb);
 
-        business.setOnClickListener(new Card.OnCardClickListener() {
-            @Override
-            public void onClick(Card card, View view) {
-                Intent intent = new Intent(getApplicationContext(),MainActivity.class);
-                intent.putExtra("url","http://www.economist.com/sections/business-finance/rss.xml");
-                startActivity(intent);
-            }
-        });
+            //add title to card
+            card.setTitle(listTitles[i]);
 
-        politics.setOnClickListener(new Card.OnCardClickListener() {
-            @Override
-            public void onClick(Card card, View view) {
-                Intent intent = new Intent(getApplicationContext(),MainActivity.class);
-                intent.putExtra("url","http://feeds.reuters.com/Reuters/PoliticsNews");
-                startActivity(intent);
-            }
-        });
+            //set listener
+            card.setOnClickListener(new Card.OnCardClickListener() {
+                @Override
+                public void onClick(Card card, View view) {
+                    Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+                    intent.putExtra("url",listFeeds[counter]);
+                    startActivity(intent);
+                }
+            });
 
-        sports.setOnClickListener(new Card.OnCardClickListener() {
-            @Override
-            public void onClick(Card card, View view) {
-                Intent intent = new Intent(getApplicationContext(),MainActivity.class);
-                intent.putExtra("url","http://newsrss.bbc.co.uk/rss/sportonline_uk_edition/front_page/rss.xml");
-                startActivity(intent);
-            }
-        });
+            //add card to array list of cards
+            cards.add(card);
+        }
 
-        technology.setOnClickListener(new Card.OnCardClickListener() {
-            @Override
-            public void onClick(Card card, View view) {
-                Intent intent = new Intent(getApplicationContext(),MainActivity.class);
-                intent.putExtra("url","http://feeds.wired.com/wired/index");
-                startActivity(intent);
-            }
-        });
+//        business.setOnClickListener(new Card.OnCardClickListener() {
+//            @Override
+//            public void onClick(Card card, View view) {
+//                Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+//                intent.putExtra("url","http://www.economist.com/sections/business-finance/rss.xml");
+//                startActivity(intent);
+//            }
+//        });
+//
+//        politics.setOnClickListener(new Card.OnCardClickListener() {
+//            @Override
+//            public void onClick(Card card, View view) {
+//                Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+//                intent.putExtra("url","http://feeds.reuters.com/Reuters/PoliticsNews");
+//                startActivity(intent);
+//            }
+//        });
+//
+//        sports.setOnClickListener(new Card.OnCardClickListener() {
+//            @Override
+//            public void onClick(Card card, View view) {
+//                Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+//                intent.putExtra("url","http://newsrss.bbc.co.uk/rss/sportonline_uk_edition/front_page/rss.xml");
+//                startActivity(intent);
+//            }
+//        });
+//
+//        technology.setOnClickListener(new Card.OnCardClickListener() {
+//            @Override
+//            public void onClick(Card card, View view) {
+//                Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+//                intent.putExtra("url","http://feeds.wired.com/wired/index");
+//                startActivity(intent);
+//            }
+//        });
 
-        CardViewNative businesscardview = (CardViewNative)findViewById(R.id.businesscard);
-        businesscardview.setCard(business);
-        CardViewNative politicscardview = (CardViewNative)findViewById(R.id.politicscard);
-        politicscardview.setCard(politics);
-        CardViewNative sportscardview = (CardViewNative)findViewById(R.id.sportscard);
-        sportscardview.setCard(sports);
-        CardViewNative technologycardview = (CardViewNative)findViewById(R.id.techcard);
-        technologycardview.setCard(technology);
+//        CardViewNative businesscardview = (CardViewNative)findViewById(R.id.businesscard);
+//        businesscardview.setCard(business);
+//        CardViewNative politicscardview = (CardViewNative)findViewById(R.id.politicscard);
+//        politicscardview.setCard(politics);
+//        CardViewNative sportscardview = (CardViewNative)findViewById(R.id.sportscard);
+//        sportscardview.setCard(sports);
+//        CardViewNative technologycardview = (CardViewNative)findViewById(R.id.techcard);
+//        technologycardview.setCard(technology);
+
+        CardGridArrayAdapter mCardArrayAdapter = new CardGridArrayAdapter(getApplicationContext(),cards);
+
+        CardGridView gridView = (CardGridView)findViewById(R.id.myGrid);
+        if(gridView!=null){
+            gridView.setAdapter(mCardArrayAdapter);
+        }
+
     }
 }
